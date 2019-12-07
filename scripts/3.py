@@ -46,21 +46,36 @@ class Wire(object):
         self.directions = [re.findall("[A-Z]", x)[0] for x in directions]
         self.distances = [int(re.findall("[0-9].*", x)[0]) for x in directions]
         
-    def coordinates(self):
+    def getCoordinates(self):
         # Each wire has coordinates for its path so can
         # specify here - start at x=0,y=0
         coordinates = [(0, 0)]
         for direction, distance in zip(self.directions, self.distances):
             current_position = coordinates[-1]
             coordinates.extend(getCoords(current_position, direction, distance))
-        self.coordinates = coordinates[1:]
-        return(self.coordinates)
+        coordinates = coordinates[1:]
+        return(coordinates)
 
     def crosswire(self, DSet):
         # intersect the two coordinates from Wire objects to find
         # out where they cross - all crosses
-        return(set(self.coordinates()).intersection(set(DSet.coordinates())))
+        return(set(self.getCoordinates()).intersection(set(DSet.getCoordinates())))
 
+    def nsteps(self, target_coord):
+        # calculate the number of steps it takes to
+        # get to a coordinate i.e go through the
+        # coordinates until you hit the target and
+        # then stop. Increment at each step
+        nsteps = 0
+        for coord in self.getCoordinates():
+            if not coord == target_coord:
+                nsteps += 1
+            else:
+                break
+        # have to catch the 1 that is the
+	        # final location i.e + 1 to nsteps
+        return(nsteps + 1)
+    
 # Part 1
 # read input data
 input_data = [x[:-1] for x in open("input3.txt").readlines()]
@@ -75,5 +90,19 @@ wire1 = Wire(w1)
 wire2 = Wire(w2)
 
 # find minimum from crosswire i.e intersection of two wire paths
-print ("Part 1\nAnswer = ", min([abs(x[0]) + abs(x[1]) for x in wire1.crosswire(wire2)]))
+print("Part 1\nAnswer = ", min([abs(x[0]) + abs(x[1]) for x in wire1.crosswire(wire2)]))
+
+####################################################
+# Part 2
+####################################################
+
+# Addded a method nsteps to the Wire class above
+# Iterate over the intersections and get the sum of the
+# number of steps
+sumsteps = []
+for coord in wire1.crosswire(wire2):
+    nsteps1 = wire1.nsteps(coord)
+    nsteps2 = wire2.nsteps(coord)
+    sumsteps.append(nsteps1 + nsteps2)
+print("Part 2\nAnswer = ", min(sumsteps))
 
