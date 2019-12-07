@@ -98,11 +98,9 @@ print("Part 1\nAnswer = ", min([abs(x[0]) + abs(x[1]) for x in wire1.crosswire(w
 
 # Addded a method nsteps to the Wire class above
 # Iterate over the intersections and get the sum of the
-# number of steps
-sumsteps = []
-for coord in wire1.crosswire(wire2):
-    nsteps1 = wire1.nsteps(coord)
-    nsteps2 = wire2.nsteps(coord)
-    sumsteps.append(nsteps1 + nsteps2)
+# number of steps - uses a list comprehension. Although there
+# is a lot of code upfront, the use of a class in this instance
+# I think was worth it.
+sumsteps = [wire1.nsteps(coord) + wire2.nsteps(coord) for coord in wire1.crosswire(wire2)]
 print("Part 2\nAnswer = ", min(sumsteps))
 
