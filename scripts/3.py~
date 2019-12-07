@@ -1,0 +1,17 @@
+import numpy
+import re
+import itertools
+
+input_data = [x[:-1] for x in open("input3.txt").readlines()]
+path1 = input_data[0].split(",")
+path2 = input_data[1].split(",")
+
+mat = numpy.zeros((30000,30000))
+
+# start in the middle
+start = mat[15000,15000]
+
+# add a 1 to the matrix if there is a path through it
+
+
+

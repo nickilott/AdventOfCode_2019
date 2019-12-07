@@ -1,0 +1,22 @@
+import numpy
+
+# Part 1
+def fuelAmount(value):
+    return((numpy.floor(value/3))-2)
+
+x = sum([fuelAmount(int(y[:-1])) for y in open("input.txt").readlines()])
+print("answer 1 = ", x)
+
+# Part 2
+result = []
+for x in [100756]:
+    v = x
+    fuel = fuelAmount(v)
+    total_fuel = fuel
+    if fuel >= 0:
+        total_fuel += fuelAmount(fuel)
+        print(total_fuel)
+        fuel = fuelAmount(fuel)
+    result.append(total_fuel)
+
+print(sum(result))
